@@ -87,7 +87,7 @@ function Chat() {
                      value={input}
                      onChange={e => setInput(e.target.value)}
                      type="text"
-                     placeholder="Send a message"/>
+                     placeholder="Send a message here"/>
 
                     <button onClick={sendMessage} type="submit">Send a message</button>
                 </form>
