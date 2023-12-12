@@ -1,11 +1,12 @@
 import { Avatar, IconButton } from '@material-ui/core'
 import { AttachFile, InsertEmoticon, Mic, MoreVert, SearchOutlined } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import './Chat.css'
 import db from './firebase';
 import { useStateValue } from './StateProvider';
 import firebase from 'firebase';
+import Picker from 'emoji-picker-react';
 
 function Chat() {
 
@@ -15,6 +16,7 @@ function Chat() {
     const [roomName,setRoomName] = useState("");
     const [messages,setMessages] = useState([]);
     const [{user},dispatch] = useStateValue()
+    const [chooseEmoji, setChooseEmoji] = useState(false);
 
 
     useEffect(()=>{
@@ -39,6 +41,20 @@ function Chat() {
 
         })
         setInput("")
+        setChooseEmoji(false);
+    }
+    const updateEmoji = (event, emojiObject) => {
+        console.log(event);
+        console.log(emojiObject);
+        setInput(input+emojiObject.emoji)
+    }
+    // const logoutUser =() =>{
+
+    // }
+    const history = useHistory();
+
+    const logoutUser = () => {
+        history.push('/')
     }
 
     return (
@@ -56,12 +72,13 @@ function Chat() {
                 <div className="chat_headerRight">
                     <IconButton>
                         <SearchOutlined/>
+                        
                     </IconButton>
                     <IconButton>
                         <AttachFile/>
                     </IconButton>
                     <IconButton>
-                        <MoreVert/>
+                        <MoreVert onClick={logoutUser}/>
                     </IconButton>
                 </div>
 
@@ -79,9 +96,14 @@ function Chat() {
                 </p>
                 ))}
             </div>
-
+            {chooseEmoji ? <Picker onEmojiClick={updateEmoji} disableSearchBar={true} disableSkinTonePicker={true} /> : null}
             <div className="chat_footer">
-                <InsertEmoticon/>
+                    
+                {/* <InsertEmoticon/> */}
+                <IconButton onClick={() => setChooseEmoji(!chooseEmoji)}>
+                    <InsertEmoticon />
+                 </IconButton>
+
                 <form>
                     <input
                      value={input}
@@ -91,7 +113,10 @@ function Chat() {
 
                     <button onClick={sendMessage} type="submit">Send a message</button>
                 </form>
-                <Mic/>
+                <IconButton>
+                  <Mic/>
+                </IconButton>
+               
             </div>
             
         </div>

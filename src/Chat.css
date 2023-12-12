@@ -69,6 +69,8 @@
     align-items: center;
     height: 62px;
     border-top: 1px solid lightgray;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 .chat_footer > form{
     flex: 1;
